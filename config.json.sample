@@ -1,0 +1,14 @@
+{
+	"rcon": {
+		"host": "127.0.0.1",
+		"port": 25575,
+		"password": "0000",
+		"rconReconnectInterval": 10
+	},	
+
+	"minecraft": {
+		"world": "world"
+	},
+
+	"logFile": "./matrix.log"
+}

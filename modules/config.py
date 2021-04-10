@@ -1,31 +1,32 @@
-import json
+import json5
 
 class Config:
-	def __init__(self, logger, file):
+	def __init__(self, file):
 		self.file = file
 
 		try:
 			with open(self.file, "r") as f:
-				config = json.loads(f.read())
+				config = json5.loads(f.read())
 
-				for key, value in config.items():
-					if type(value) == dict:
-						section = ConfigSection()
-						
-						for sectionKey, sectionValue in value:
-							section.__setattr__(sectionKey, sectionValue)
-
-						value = section
-
-					self.__setattr__(key, value)
+			self._parseSection(config, self)
 
 		except FileNotFoundError as e:
 			print("Config file not found")
 			exit()
 
-		except json.decoder.JSONDecodeError as e:
+		except ValueError as e:
 			print(f"JSON decode error: {e}")
 			exit()
+
+	def _parseSection(self, data, instance):
+		for key, value in data.items():
+			if type(value) == dict:
+				section = ConfigSection()
+				self._parseSection(value, section)
+
+				value = section
+
+			instance.__setattr__(key, value)
 
 class ConfigSection:
 	pass

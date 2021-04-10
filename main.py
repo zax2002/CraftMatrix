@@ -1,3 +1,6 @@
-from modules.craftMatrix import CraftMatrix
+from modules.core import Core
 
-CraftMatrix.start()
+core = Core()
+
+core.start()
+core.testMatrix()

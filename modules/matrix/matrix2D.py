@@ -6,26 +6,41 @@ class Matrix2D:
 		self.xSize = self.config.matrix.dimensionScheme2d.xSize
 		self.ySize = self.config.matrix.dimensionScheme2d.ySize
 
-	def _coordsInMatrix(self, matrixCoords):
+	def _coordsInMatrix(self, matrixCoordinates):
 		return (
-			matrixCoords[0] > 0 and matrixCoords[0] < self.xSize and \
-			matrixCoords[1] > 0 and matrixCoords[1] < self.ySize
+			matrixCoordinates[0] >= 0 and matrixCoordinates[0] < self.xSize and \
+			matrixCoordinates[1] >= 0 and matrixCoordinates[1] < self.ySize
 		)
 
-	def _convertCoords(self, matrixCoords):
-		minecraftCoords = (
-			self.anchorMinecraftCoords[0] + (
-				matrixCoords[0]*self.xDirection[0] +
-				matrixCoords[1]*self.yDirection[0]
+	def _convertCoordinates(self, matrixCoordinates):
+		minecraftCoordinates = (
+			self.anchorMinecraftCoordinates[0] + (
+				matrixCoordinates[0]*self.xDirection[0] +
+				matrixCoordinates[1]*self.yDirection[0]
 			),
-			self.anchorMinecraftCoords[1] + (
-				matrixCoords[0]*self.xDirection[1] +
-				matrixCoords[1]*self.yDirection[1]
+			self.anchorMinecraftCoordinates[1] + (
+				matrixCoordinates[0]*self.xDirection[1] +
+				matrixCoordinates[1]*self.yDirection[1]
 			),
-			self.anchorMinecraftCoords[2] + (
-				matrixCoords[0]*self.xDirection[2] +
-				matrixCoords[1]*self.yDirection[2]
+			self.anchorMinecraftCoordinates[2] + (
+				matrixCoordinates[0]*self.xDirection[2] +
+				matrixCoordinates[1]*self.yDirection[2]
 			)
 		)
 
-		return minecraftCoords
+		return minecraftCoordinates
+
+	def _cropCoordinates(self, matrixCoordinates):
+		matrixCoordinates = list(matrixCoordinates)
+
+		if matrixCoordinates[0] < 0:
+			matrixCoordinates[0] = 0
+		elif matrixCoordinates[0] >= self.xSize:
+			matrixCoordinates[0] = self.xSize-1
+
+		if matrixCoordinates[1] < 0:
+			matrixCoordinates[1] = 0
+		elif matrixCoordinates[1] >= self.ySize:
+			matrixCoordinates[1] = self.ySize-1
+
+		return tuple(matrixCoordinates)

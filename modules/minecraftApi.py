@@ -20,7 +20,7 @@ class MinecraftApi:
 	def connect(self):
 		try:
 			self.logger.info(f"Connecting to {self.rconHost}:{self.rconPort}..")
-			
+
 			self.rcon.connect()
 			self.connected = True
 
@@ -51,20 +51,38 @@ class MinecraftApi:
 		if not self.connected:
 			return False
 
-		if self.world == "world":
+		if self.world == "":
 			command = f"setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
 		else:
 			command = f"execute in {self.world} run setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
 
+		result = self._command(command)
+		return result and (result.startswith("Changed the block at") or result.startswith("Could not set the block"))
 
+		
+	def fill(self, x1, y1, z1, x2, y2, z2, block):
+		if not self.connected:
+			return False
+
+		if self.world == "":
+			command = f"fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
+		else:
+			command = f"execute in {self.world} run fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
+
+		result = self._command(command)
+		return result and (result.startswith("Successfully filled") or result.startswith("No blocks were filled"))
+
+	def _command(self, command):
 		try:
 			result = self.rcon.command(command)
 			self.logger.debug(f"{command}\n{result}")
-
-			return result.startswith("Changed the block at") or result.startswith("Could not set the block")
 
 		except (ConnectionResetError, ConnectionAbortedError):
 			self.connected = False
 			self.logger.error(f"The connection was terminated")
 
 			self._reconnect()
+
+			return False
+
+		return result

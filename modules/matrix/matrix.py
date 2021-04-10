@@ -1,8 +1,11 @@
 class Matrix:
-	def __init__(self, config):
+	def __init__(self, config, setCallback, fillCallback):
 		self.config = config
 
-		self.anchorMinecraftCoords = config.minecraft.anchorCoords
+		self.setCallback = setCallback
+		self.fillCallback = fillCallback
+
+		self.anchorMinecraftCoordinates = config.minecraft.anchorCoordinates
 
 		self.data = {}
 

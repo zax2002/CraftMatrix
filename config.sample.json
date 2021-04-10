@@ -11,6 +11,7 @@
 	},	
 
 	"minecraft": {
+		// "" : default world
 		"world": "world",
 		"anchorCoords": [-48, 131, -30]
 	},

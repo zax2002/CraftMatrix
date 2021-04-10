@@ -1,20 +1,37 @@
 class MatrixMonochrome:
-	def __init__(self, config, setCallback):
+	def __init__(self, config):
 		self.onStateBlock = self.config.matrix.colorSchemeMonochrome.onStateBlock
 		self.offStateBlock = self.config.matrix.colorSchemeMonochrome.offStateBlock
 
-		self.setCallback = setCallback
+	def set(self, matrixCoordinates, value):
+		matrixCoordinates = tuple(matrixCoordinates)
 
-	def set(self, matrixCoords, value):
-		matrixCoords = tuple(matrixCoords)
+		if not self._coordsInMatrix(matrixCoordinates):
+			return False
 
-		if not self._coordsInMatrix(matrixCoords):
-			return
+		print(matrixCoordinates)
 
-		if matrixCoords in self.data and self.data[matrixCoords] == value:
-			return
+		if matrixCoordinates in self.data and self.data[matrixCoordinates] == value:
+			return False
 
-		minecraftCoords = self._convertCoords(matrixCoords)
+		minecraftCoordinates = self._convertCoordinates(matrixCoordinates)
 
-		if self.setCallback(minecraftCoords, self.onStateBlock if value else self.offStateBlock):
-			self.data[matrixCoords] = value
+		if self.setCallback(minecraftCoordinates, self.onStateBlock if value else self.offStateBlock):
+			self.data[matrixCoordinates] = value
+
+			return True
+
+		else:
+			return False
+
+	def fill(self, matrixCoordinatesFrom, matrixCoordinatesTo, value):
+		matrixCoordinatesFrom = self._cropCoordinates(matrixCoordinatesFrom)
+		matrixCoordinatesTo = self._cropCoordinates(matrixCoordinatesTo)
+		
+		minecraftCoordinatesFrom = self._convertCoordinates(matrixCoordinatesFrom)
+		minecraftCoordinatesTo = self._convertCoordinates(matrixCoordinatesTo)
+
+		if self.fillCallback(minecraftCoordinatesFrom, minecraftCoordinatesTo, self.onStateBlock if value else self.offStateBlock):
+			for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
+				for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
+					self.data[(x, y)] = value

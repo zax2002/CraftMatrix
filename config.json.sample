@@ -1,13 +1,57 @@
 {
+	"telegram": {
+		"botToken": ""
+	},
+
 	"rcon": {
 		"host": "127.0.0.1",
 		"port": 25575,
 		"password": "0000",
-		"rconReconnectInterval": 10
+		"reconnectInterval": 10
 	},	
 
 	"minecraft": {
-		"world": "world"
+		"world": "world",
+		"anchorCoords": [-48, 131, -30]
+	},
+
+	"matrix": {
+		// 0 : monochrome
+		// 1 : blocks
+		"colorScheme": 0,
+		"colorSchemeMonochrome": {
+			"onStateBlock": "redstone_block",
+			"offStateBlock": "air"
+		},
+		"colorSchemeBlocks": {
+			"list": [
+				"barrier"
+			],
+			// -1 whitelist
+			// 0 disabled
+			// 1 blacklist
+			"listMode": 1
+		},
+
+		// 0 : 2d
+		// 1 : 3d
+		"dimensionScheme": 0,
+		"dimensionScheme2d": {
+			"xDirection": [1, 0, 0],
+			"yDirection": [0, -1, 0],
+
+			"xSize": 96,
+			"ySize": 64
+		},
+		"dimensionScheme3d": {
+			"xDirection": [1, 0, 0],
+			"yDirection": [0, 1, 0],
+			"zDirection": [0, 0, 1],
+
+			"xSize": 16,
+			"ySize": 64,
+			"zSize": 16
+		},
 	},
 
 	"logFile": "./matrix.log"

@@ -26,10 +26,13 @@
 	"minecraft": {
 		// "" : default world
 		"world": "",
-		"anchorCoordinates": [-48, 131, -30],
+		"anchorCoordinates": [0, 0, 0],
 
 		// %(world)s
-		"onStartCommands": []
+		"onStartCommands": [],
+
+		"useCommandCombiner": true,
+		"minecartsStackCoordinates": [-1, 0, 0]
 	},
 
 	"matrix": {

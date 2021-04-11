@@ -2,7 +2,7 @@ import time
 import logging
 from mcrcon import MCRcon, MCRconException
 
-class MinecraftApi:
+class RconManager:
 	def __init__(self, config):
 		self.logger = logging.getLogger(self.__class__.__name__)
 
@@ -15,9 +15,7 @@ class MinecraftApi:
 		self.rcon = MCRcon(host=self.rconHost, port=self.rconPort, password=self.rconPassword)
 		self.connected = False
 
-		self.world = self.config.minecraft.world
-
-	def connect(self):
+	def connect(self, reconnect=False):
 		try:
 			self.logger.info(f"Connecting to {self.rconHost}:{self.rconPort}..")
 
@@ -35,44 +33,24 @@ class MinecraftApi:
 			self.connected = False
 			self.logger.error(f"The connection could not be made as the server actively refused it.")
 
-			self._reconnect()
+			if not reconnect:
+				self._reconnect()
 
 		except ConnectionError as e:
 			self.connected = False
 			self.logger.error(f"Connection error: {e}")
 
 	def _reconnect(self):
-		self.logger.info(f"Reconnecting in {self.config.rcon.reconnectInterval} seconds..")
+		while not self.connected:
+			self.logger.info(f"Reconnecting in {self.config.rcon.reconnectInterval} seconds..")
 
-		time.sleep(self.config.rcon.reconnectInterval)
-		self.connect()
-
-	def setBlock(self, x, y, z, block, nbt=""):
-		if not self.connected:
-			return False
-
-		if self.world == "":
-			command = f"setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
-		else:
-			command = f"execute in {self.world} run setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
-
-		result = self.sendCommand(command)
-		return result and (result.startswith("Changed the block at") or result.startswith("Could not set the block"))
-
-		
-	def fill(self, x1, y1, z1, x2, y2, z2, block):
-		if not self.connected:
-			return False
-
-		if self.world == "":
-			command = f"fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
-		else:
-			command = f"execute in {self.world} run fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
-
-		result = self.sendCommand(command)
-		return result and (result.startswith("Successfully filled") or result.startswith("No blocks were filled"))
+			time.sleep(self.config.rcon.reconnectInterval)
+			self.connect(True)
 
 	def sendCommand(self, command):
+		if not self.connected:
+			self._reconnect()
+
 		try:
 			result = self.rcon.command(command)
 			self.logger.debug(f"{command}\n{result}")
@@ -81,14 +59,13 @@ class MinecraftApi:
 			self.connected = False
 			self.logger.error(f"The connection was terminated")
 
-			self._reconnect()
-			self.sendCommand()
-
 		except TimeoutError:
 			self.connected = False
-			self.logger.error(f"Connection timeot")
+			self.logger.error(f"Connection timeout")
 
-			self._reconnect()
-			self.sendCommand(command)
+		finally:
+			if not self.connected:
+				self._reconnect()
+				result = self.sendCommand(command)
 
 		return result

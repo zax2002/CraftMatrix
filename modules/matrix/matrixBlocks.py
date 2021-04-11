@@ -9,15 +9,15 @@ class MatrixBlocks:
 		if not self._coordinatesInMatrix(matrixCoordinates):
 			return False
 
-		if matrixCoordinates in self.data and self.data[matrixCoordinates] == value:
+		if matrixCoordinates in self.data and self.data[matrixCoordinates] == block:
 			return False
 
 		if not self._validateBlock(block):
 			return False
 
-		minecraftCoordinatess = self._convertCoordinates(matrixCoordinates)
+		minecraftCoordinates = self._convertCoordinates(matrixCoordinates)
 
-		if self.setCallback(minecraftCoordinates, block):
+		if self.setCallback(*minecraftCoordinates, block):
 			self.data[matrixCoordinates] = block
 
 			return True
@@ -35,7 +35,7 @@ class MatrixBlocks:
 		minecraftCoordinatesFrom = self._convertCoordinates(matrixCoordinatesFrom)
 		minecraftCoordinatesTo = self._convertCoordinates(matrixCoordinatesTo)
 
-		if self.fillCallback(minecraftCoordinatesFrom, minecraftCoordinatesTo, block):
+		if self.fillCallback(*minecraftCoordinatesFrom, *minecraftCoordinatesTo, block):
 			for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
 				for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
 					self.data[(x, y)] = block

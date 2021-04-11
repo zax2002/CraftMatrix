@@ -8,7 +8,7 @@ class Matrix3D:
 		self.ySize = self.config.matrix.dimensionScheme3d.ySize
 		self.zSize = self.config.matrix.dimensionScheme3d.zSize
 
-	def _coordsInMatrix(self, matrixCoordinates):
+	def _coordinatesInMatrix(self, matrixCoordinates):
 		return (
 			matrixCoordinates[0] >= 0 and matrixCoordinates[0] < self.xSize and \
 			matrixCoordinates[1] >= 0 and matrixCoordinates[1] < self.ySize and \

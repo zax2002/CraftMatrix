@@ -3,9 +3,9 @@ from modules.matrix.matrixBlocks import MatrixBlocks
 from modules.matrix.matrix2D import Matrix2D
 
 class MatrixBlocks2D(Matrix, MatrixBlocks, Matrix2D):
-	def __init__(self, config, setCallback):
+	def __init__(self, config, setCallback, fillCallback):
 		Matrix.__init__(self, config, setCallback, fillCallback)
-		MatrixMonochrome.__init__(self, config)
+		MatrixBlocks.__init__(self, config)
 		Matrix2D.__init__(self, config)
 
 	def clear(self):

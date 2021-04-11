@@ -1,6 +1,19 @@
 {
-	"telegram": {
-		"botToken": ""
+	"bot": {
+		"token": "",
+
+		// not implemented
+
+		// "enablePrivate": true,
+
+		// "enableConversations": false,
+		// // [] : any
+		// "conversations": [],
+
+		"allowEdit": true,
+
+		"sendCooldown": 0,
+		"editCooldown": 0
 	},
 
 	"rcon": {
@@ -8,21 +21,26 @@
 		"port": 25575,
 		"password": "0000",
 		"reconnectInterval": 10
-	},	
+	},
 
 	"minecraft": {
 		// "" : default world
-		"world": "world",
-		"anchorCoords": [-48, 131, -30]
+		"world": "",
+		"anchorCoordinates": [-48, 131, -30],
+
+		// %(world)s
+		"onStartCommands": []
 	},
 
 	"matrix": {
+		"clearOnStart": false,
+
 		// 0 : monochrome
 		// 1 : blocks
 		"colorScheme": 0,
 		"colorSchemeMonochrome": {
-			"onStateBlock": "redstone_block",
-			"offStateBlock": "air"
+			"onStateBlock": "white_concrete",
+			"offStateBlock": "black_concrete"
 		},
 		"colorSchemeBlocks": {
 			"list": [

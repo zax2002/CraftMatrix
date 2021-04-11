@@ -6,7 +6,7 @@ class Matrix2D:
 		self.xSize = self.config.matrix.dimensionScheme2d.xSize
 		self.ySize = self.config.matrix.dimensionScheme2d.ySize
 
-	def _coordsInMatrix(self, matrixCoordinates):
+	def _coordinatesInMatrix(self, matrixCoordinates):
 		return (
 			matrixCoordinates[0] >= 0 and matrixCoordinates[0] < self.xSize and \
 			matrixCoordinates[1] >= 0 and matrixCoordinates[1] < self.ySize

@@ -56,7 +56,7 @@ class MinecraftApi:
 		else:
 			command = f"execute in {self.world} run setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
 
-		result = self._command(command)
+		result = self.sendCommand(command)
 		return result and (result.startswith("Changed the block at") or result.startswith("Could not set the block"))
 
 		
@@ -69,10 +69,10 @@ class MinecraftApi:
 		else:
 			command = f"execute in {self.world} run fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
 
-		result = self._command(command)
+		result = self.sendCommand(command)
 		return result and (result.startswith("Successfully filled") or result.startswith("No blocks were filled"))
 
-	def _command(self, command):
+	def sendCommand(self, command):
 		try:
 			result = self.rcon.command(command)
 			self.logger.debug(f"{command}\n{result}")
@@ -82,7 +82,13 @@ class MinecraftApi:
 			self.logger.error(f"The connection was terminated")
 
 			self._reconnect()
+			self.sendCommand()
 
-			return False
+		except TimeoutError:
+			self.connected = False
+			self.logger.error(f"Connection timeot")
+
+			self._reconnect()
+			self.sendCommand(command)
 
 		return result

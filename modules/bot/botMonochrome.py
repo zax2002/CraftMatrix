@@ -7,23 +7,21 @@ class BotMonochrome:
 		self.dispatcher.add_handler(CommandHandler("set", self.setCommand))
 		self.dispatcher.add_handler(CommandHandler("clr", self.clrCommand))
 
-	def _parseCoordinatesAndValue(self, args):
-		if len(args) != 2:
-			return False, None, None
-
-		coordinates = args
-
-		try:
-			for i in range(len(coordinates)):
-				coordinates[i] = int(coordinates[i])
-		except ValueError:
-			return False, None, None
-
-		return True, coordinates, None
 
 	def setCommand(self, update, context):
+		if update.message != None:
+			userId = update.message.from_user.id
+			action = CooldownAction.SEND
+
+		elif update.edited_message != None and self.config.bot.allowEdit:
+			userId = update.edited_message.from_user.id
+			action = CooldownAction.EDIT
+
+		else:
+			return
+
 		if self.enabledCooldown:
-			if not self.cooldownManager.isCooledDown(update.message.from_user.id, CooldownAction.SEND):
+			if not self.cooldownManager.isCooledDown(userId, action):
 				return
 
 		valid, matrixCoordinates, _ = self._parseCoordinatesAndValue(context.args)
@@ -32,8 +30,19 @@ class BotMonochrome:
 			self.setCallback(matrixCoordinates, True)
 
 	def clrCommand(self, update, context):
+		if update.message != None:
+			userId = update.message.from_user.id
+			action = CooldownAction.SEND
+
+		elif update.edited_message != None and self.config.bot.allowEdit:
+			userId = update.edited_message.from_user.id
+			action = CooldownAction.EDIT
+
+		else:
+			return
+
 		if self.enabledCooldown:
-			if not self.cooldownManager.isCooledDown(update.message.from_user.id, CooldownAction.SEND):
+			if not self.cooldownManager.isCooledDown(userId, action):
 				return
 
 		valid, matrixCoordinates, _ = self._parseCoordinatesAndValue(context.args)

@@ -7,7 +7,7 @@ class Bot:
 	def __init__(self, config, setCallback):
 		self.config = config
 
-		self.enabledCooldown = self.config.bot.sendCooldown > 0 or self.config.bor.editCooldown > 0
+		self.enabledCooldown = self.config.bot.sendCooldown > 0 or self.config.bot.editCooldown > 0
 		self.colorScheme = self.config.matrix.colorScheme
 		self.dimensionScheme = self.config.matrix.dimensionScheme
 

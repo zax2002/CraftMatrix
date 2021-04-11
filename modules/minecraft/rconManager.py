@@ -58,6 +58,7 @@ class RconManager:
 		except (ConnectionResetError, ConnectionAbortedError):
 			self.connected = False
 			self.logger.error(f"The connection was terminated")
+			print(command)
 
 		except TimeoutError:
 			self.connected = False

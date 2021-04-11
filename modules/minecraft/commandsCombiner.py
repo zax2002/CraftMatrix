@@ -34,7 +34,7 @@ class CommandsCombiner:
 			commandsToCombine = []
 			while len(commands):
 				command = commands.pop(0)
-				combinedCommandLength += len(command) + 53
+				combinedCommandLength += len(command) + 55
 
 				if combinedCommandLength > self.RCON_MAX_COMMAND_LENGTH:
 					commands.insert(0, command)

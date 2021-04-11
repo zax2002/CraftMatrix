@@ -11,7 +11,7 @@ class MinecraftUtils:
 		self.minecartsStackCoordinates = self.config.minecraft.minecartsStackCoordinates
 
 		self.rconManager = rconManager
-		self.combiner = CommandsCombiner(self.config)
+		self.commandsCombiner = CommandsCombiner(self.config)
 
 	def runCommandInWorld(self, command):
 		if self.world != "":
@@ -20,18 +20,21 @@ class MinecraftUtils:
 		return self.rconManager.sendCommand(command)
 
 	def setBlock(self, x, y, z, block, nbt=""):
-		command = f"setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
+		command = self.getSetBlockCommand(x, y, z, block, nbt)
 		result = self.runCommandInWorld(command)
 
 		return result and (result.startswith("Changed the block at") or result.startswith("Could not set the block"))
 
+	def getSetBlockCommand(self, x, y, z, block, nbt=""):
+		return f"setblock {x} {y} {z} {block}" + (f" {nbt}" if len(nbt) else "")
+
 		
 	def fill(self, x1, y1, z1, x2, y2, z2, block):
 		command = f"fill {x1} {y1} {z1} {x2} {y2} {z2} {block}"
-		result = self.sendCommand(command)
+		result = self.runCommandInWorld(command)
 
 		return result and (result.startswith("Successfully filled") or result.startswith("No blocks were filled"))
 
 	def runMultipleCommands(self, commands):
-		for combinedCommand in self.combiner.combine(commands, (16+len(self.world) if self.world != "" else 0)):
+		for combinedCommand in self.commandsCombiner.combine(commands, (16+len(self.world) if self.world != "" else 0)):
 			self.runCommandInWorld(combinedCommand)

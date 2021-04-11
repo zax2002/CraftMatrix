@@ -7,27 +7,23 @@ class MatrixBlocks:
 		matrixCoordinates = tuple(matrixCoordinates)
 
 		if not self._coordinatesInMatrix(matrixCoordinates):
-			return False
+			return
 
 		if matrixCoordinates in self.data and self.data[matrixCoordinates] == block:
-			return False
+			return
 
 		if not self._validateBlock(block):
-			return False
+			return
 
 		minecraftCoordinates = self._convertCoordinates(matrixCoordinates)
 
-		if self.setCallback(*minecraftCoordinates, block):
-			self.data[matrixCoordinates] = block
-
-			return True
-
-		else:
-			return True
+		self.data[matrixCoordinates] = block
+		self.setCallback(minecraftCoordinates, block)
+			
 
 	def fill(self, matrixCoordinatesFrom, matrixCoordinatesTo, block):
 		if not self._validateBlock(block):
-			return False
+			return
 
 		matrixCoordinatesFrom = self._cropCoordinates(matrixCoordinatesFrom)
 		matrixCoordinatesTo = self._cropCoordinates(matrixCoordinatesTo)
@@ -35,15 +31,11 @@ class MatrixBlocks:
 		minecraftCoordinatesFrom = self._convertCoordinates(matrixCoordinatesFrom)
 		minecraftCoordinatesTo = self._convertCoordinates(matrixCoordinatesTo)
 
-		if self.fillCallback(*minecraftCoordinatesFrom, *minecraftCoordinatesTo, block):
-			for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
-				for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
-					self.data[(x, y)] = block
+		for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
+			for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
+				self.data[(x, y)] = block
 
-			return True
-
-		else:
-			return False
+		self.fillCallback(*minecraftCoordinatesFrom, *minecraftCoordinatesTo, block)
 
 	def _validateBlock(self, block):
 		if self.listMode == ListMode.WHITELIST:

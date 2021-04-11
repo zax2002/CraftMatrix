@@ -7,20 +7,15 @@ class MatrixMonochrome:
 		matrixCoordinates = tuple(matrixCoordinates)
 
 		if not self._coordinatesInMatrix(matrixCoordinates):
-			return False
+			return
 
 		if matrixCoordinates in self.data and self.data[matrixCoordinates] == value:
-			return False
+			return
 
 		minecraftCoordinates = self._convertCoordinates(matrixCoordinates)
 
-		if self.setCallback(*minecraftCoordinates, self.onStateBlock if value else self.offStateBlock):
-			self.data[matrixCoordinates] = value
-
-			return True
-
-		else:
-			return False
+		self.data[matrixCoordinates] = value
+		self.setCallback(minecraftCoordinates, self.onStateBlock if value else self.offStateBlock)
 
 	def fill(self, matrixCoordinatesFrom, matrixCoordinatesTo, value):
 		matrixCoordinatesFrom = self._cropCoordinates(matrixCoordinatesFrom)
@@ -29,7 +24,9 @@ class MatrixMonochrome:
 		minecraftCoordinatesFrom = self._convertCoordinates(matrixCoordinatesFrom)
 		minecraftCoordinatesTo = self._convertCoordinates(matrixCoordinatesTo)
 
-		if self.fillCallback(*minecraftCoordinatesFrom, *minecraftCoordinatesTo, self.onStateBlock if value else self.offStateBlock):
-			for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
-				for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
-					self.data[(x, y)] = value
+		for y in range(matrixCoordinatesFrom[1], matrixCoordinatesTo[1]+1):
+			for x in range(matrixCoordinatesFrom[0], matrixCoordinatesTo[1]+1):
+				self.data[(x, y)] = value
+		
+		self.fillCallback(*minecraftCoordinatesFrom, *minecraftCoordinatesTo, self.onStateBlock if value else self.offStateBlock)
+			

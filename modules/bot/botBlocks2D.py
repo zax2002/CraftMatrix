@@ -32,3 +32,6 @@ class BotBlocks2D(Bot, BotBlocks):
 				return False, None, None
 
 		return True, coordinates, block
+
+	def _setCommands(self):
+		self.bot.set_my_commands(self.config.bot.botBlocks2DCommands)

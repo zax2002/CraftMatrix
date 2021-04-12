@@ -17,8 +17,12 @@ class Bot:
 			self.cooldownManager = CooldownManager(self.config)
 
 		self.updater = Updater(self.config.bot.token)
+		self.bot = self.updater.bot
 		self.dispatcher = self.updater.dispatcher
 
 	def start(self):
+		if self.config.bot.setBotCommandsOnStart:
+			self._setCommands()
+
 		self.updater.start_polling()
 		self.updater.idle()

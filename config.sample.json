@@ -2,6 +2,23 @@
 	"bot": {
 		"token": "",
 
+		"setBotCommandsOnStart": true,
+		"botMonochrome2DCommands": [
+			["set", "/set {x} {y} - Set pixel"],
+			["clr", "/clr {x} {y} - Clear pixel"]
+			
+		],
+		"botMonochrome3DCommands": [
+			["set", "/set {x} {y} {z} - Set voxel"],
+			["clr", "/clr {x} {y} {z} - Clear voxel"]
+		],
+		"botBlocks2DCommands": [
+			["set", "/set {x} {y} {block} - Set pixel"]
+		],
+		"botBlocks3DCommands": [
+			["set", "/set {x} {y} {z} {block} - Set voxel"]
+		],
+
 		// not implemented
 
 		// "enablePrivate": true,

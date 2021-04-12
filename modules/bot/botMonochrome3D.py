@@ -19,3 +19,6 @@ class BotMonochrome3D(Bot, BotMonochrome):
 			return False, None, None
 
 		return True, coordinates, None
+
+	def _setCommands(self):
+		self.bot.set_my_commands(self.config.bot.botMonochrome3DCommands)

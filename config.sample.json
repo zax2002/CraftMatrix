@@ -31,7 +31,7 @@
 		// %(world)s
 		"onStartCommands": [],
 
-		"useCommandCombiner": true,
+		"useCommandsCombiner": true,
 		"minecartsStackCoordinates": [-1, 0, 0]
 	},
 

@@ -4,7 +4,7 @@ import re
 
 class BotBlocks:
 	def __init__(self):
-		self.regexp = re.compile(r"(\w+:|)\w+(\[( *\w+ *= *[a-z0-9\.]+ *,{0,1})+\]|)")
+		self.regexp = re.compile(r"^([a-z]+:|)(\w+)(\[( *\w+ *= *[a-z0-9\.]+ *,{0,1})+\]|)$")
 
 		self.dispatcher.add_handler(CommandHandler("set", self.setCommand))
 

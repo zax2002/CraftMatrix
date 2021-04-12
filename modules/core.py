@@ -12,7 +12,7 @@ class Core:
 		self.config = Config("./config.json")
 		self.useCommandsCombiner = self.config.minecraft.useCommandsCombiner
 
-		logging.basicConfig(format=f"[%(levelname)s] [%(asctime)s] [%(name)s]: %(message)s", level=logging.INFO, handlers=[logging.FileHandler(self.config.logFile), logging.StreamHandler()])
+		logging.basicConfig(format=f"[%(levelname)s] [%(asctime)s] [%(name)s]: %(message)s", level=logging.__getattribute__(self.config.bot.debugMode), handlers=[logging.FileHandler(self.config.logFile), logging.StreamHandler()])
 		self.logger = logging.getLogger(self.__class__.__name__)
 
 		self.rconManager = RconManager(self.config)

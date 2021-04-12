@@ -13,7 +13,11 @@
 		"allowEdit": true,
 
 		"sendCooldown": 0,
-		"editCooldown": 0
+		"editCooldown": 0,
+
+		//INFO - Only required information
+		//DEBUG - All information
+		"debugMode": "INFO"
 	},
 
 	"rcon": {

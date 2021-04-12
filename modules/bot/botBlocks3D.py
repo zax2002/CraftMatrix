@@ -6,8 +6,8 @@ class BotBlocks3D(Bot, BotBlocks):
 		Bot.__init__(self, config, setCallback)
 		BotBlocks.__init__(self)
 
-		self.listMode = self.config.colorSchemeBlocks.listMode
-		self.list = self.config.colorSchemeBlocks.list
+		self.listMode = self.config.matrix.colorSchemeBlocks.listMode
+		self.list = self.config.matrix.colorSchemeBlocks.list
 
 	def _parseCoordinatesAndValue(self, args):
 		if len(args) != 4:

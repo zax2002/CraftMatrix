@@ -18,7 +18,7 @@ class CooldownManager:
 	def isCooledDown(self, userId, actionType):
 		currentTime = time.time()
 
-		if userId in self.users and (actionType in self.users[userId] and currentTime - self.users[userId][actionType]) < self.cooldown[actionType]:
+		if userId in self.users and actionType in self.users[userId] and (currentTime - self.users[userId][actionType]) < self.cooldown[actionType]:
 			return False
 
 		else:
